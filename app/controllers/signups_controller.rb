@@ -1,14 +1,15 @@
 class SignupsController < ApplicationController
+    before_action :authorize
     #POST /signups/:id
     def create
-        signup = Signup.create!(signup_params)
+        signup = Signup.create(signup_params)
         render json: signup, status: :created
-    end
+      end
 
     #PATCH /signups/:id
     def update
         signup = find_signup
-        signup.update(signup_params)
+        signup.update(params.permit(:task))
         render json: signup
     end
 
@@ -19,7 +20,11 @@ class SignupsController < ApplicationController
     end
 
     def signup_params
-        params.permit(:event_id, :volunteer_id, :task)
+        params.permit(:event_id, :task, volunteer_id: session[:user_id])
+    end
+
+    def authorize
+        return render json: { error: "Not authorized" }, status: :unauthorized unless session.include? :user_id
     end
 
 end
