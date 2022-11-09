@@ -7,6 +7,8 @@ import Info from "./components/Infos";
 import LogIn from "./components/LogIn";
 import SignUp from "./components/SignUp";
 import NavBar from './components/NavBar'
+import Search from "./components/Search";
+import SelectEvent from "./components/SelectEvent";
 
 function App() {
   const [eventListing, setEventListing] = useState([]);
@@ -19,7 +21,16 @@ function App() {
       .then((events) => {
         setEventListing(events);
       });
+
+    fetch("/me").then((response) => {
+      if (response.ok) {
+        response.json().then((user) => setVolunteerLogIn(user));
+      }else {
+        return <Redirect to = "/login" />;
+      }
+    });
   }, []);
+
 
   function handleLogout() {
     fetch("/logout", {
@@ -31,12 +42,19 @@ function App() {
     setSearch(event.target.value)
   }
 
+  const searchEvents = eventListing.filter((events) => {
+    return events.title.toLowerCase().includes(search.toLowerCase()) || events.description.toLowerCase().includes(search.toLowerCase())
+  })
+
   return (
       <div className="App">
         <NavBar volunteerLogIn={volunteerLogIn} handleLogout = {handleLogout} />
         <Switch>
           <Route exact path="/">
-          {volunteerLogIn ? <Redirect to="/" /> : <Home handleSearch={handleSearch} search={search} eventListing={eventListing} />}
+         <Home searchEvents={searchEvents} handleSearch={handleSearch} search={search} eventListing={eventListing} />
+          </Route>
+          <Route path="/events/:title">
+            <SelectEvent eventListing={eventListing}/>
           </Route>
           <Route path="/events">
             <EventListing eventListing = {eventListing} setEventListing = {setEventListing}/>

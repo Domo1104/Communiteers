@@ -1,8 +1,7 @@
-function Home({handleSearch, search, eventListing}) {
-    function filterSearch() {
+import React, { useState, useHistory } from "react";
 
-    }
-    
+function Home({handleSearch, search, eventListing}) {
+
   return (
     <div>
         <form className="search-bar">
@@ -12,6 +11,7 @@ function Home({handleSearch, search, eventListing}) {
             value={search}
             onChange={handleSearch}
             />
+            <button> Search </button>
         </form>
     </div>
   );
