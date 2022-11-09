@@ -1,0 +1,36 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: rgb(26, 95, 26);
+    height: 100px;
+}
+
+.logo{
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: 400;
+    font-size: 38px;
+    text-decoration: none;
+    background-color: rgb(26, 95, 26);
+    color: rgb(136, 255, 0);
+}
+
+.nav-links a{
+    color:rgb(136, 255, 0);
+    text-decoration: none;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.signup-login a{
+    color:rgb(136, 255, 0);
+    text-decoration: none;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+

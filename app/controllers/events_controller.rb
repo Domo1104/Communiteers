@@ -1,4 +1,7 @@
 class EventsController < ApplicationController
+    before_action :authorize
+    skip_before_action :authorize, only: [:index]
+
     #GET /events
     def index
         event = Event.all
@@ -39,5 +42,10 @@ class EventsController < ApplicationController
 
     def event_params
         params.permit(:title, :start_date_time, :end_date_time, :location, :category, :description)
+    end
+
+
+    def authorize
+        return render json: { error: "Not authorized" }, status: :unauthorized unless session.include? :user_id
     end
 end

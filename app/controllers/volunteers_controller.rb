@@ -7,9 +7,13 @@ class VolunteersController < ApplicationController
 
     #GET /volunteers/:id
     def show
-        volunteer = find_volunteer
-        render json: volunteer, status: :ok
-    end
+        volunteer = Volunteer.find_by(id: session[:user_id])
+        if volunteer
+          render json: volunteer
+        else
+          render json: { error: "Not authorized" }, status: :unauthorized
+        end
+      end
     
     #POST /volunteers/:id
     def create
@@ -22,6 +26,14 @@ class VolunteersController < ApplicationController
         volunteer = find_volunteer
         volunteer.update(volunteer_params)
         render json: volunteer
+    end
+
+    def check_email
+        return unless params[:email].present?
+      
+        volunteer = Volunteer.find_by_email(params[:email].downcase)
+        return 'taken' if Recurly::Account.find(volunteer)
+        'available'
     end
     
     private
